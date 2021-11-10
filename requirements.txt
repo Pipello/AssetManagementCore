@@ -1,3 +1,5 @@
-django==3.1.7
+django>=3.0,<4.0
+psycopg2-binary>=2.8
 djangorestframework==3.11.1
 django-cors-headers==3.7.0
+pycoingecko==2.2.0

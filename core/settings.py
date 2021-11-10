@@ -15,6 +15,27 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+BASE_CURRENCY = "eur"
+
+GECKO_COINS = [
+    "bitcoin",
+    "ethereum",
+    "litecoin",
+    "the-graph",
+    "aave",
+    "tezos",
+    "chainlink",
+]
+
+# ASSETS = (
+#     ("bitcoin", "BTC"),
+#     ("ethereum", "ETH"),
+#     ("litecoin", "LTC"),
+#     ("aave", "AAVE"),
+#     ("tezos", "XTZ"),
+#     ("the-graph", "GRT"),
+#     ("chainlink", "LINK"),
+# )
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -132,3 +153,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = "/static/"
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"

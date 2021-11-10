@@ -6,10 +6,24 @@ from .models import Bag, Order
 
 @admin.register(Bag)
 class BagAdmin(admin.ModelAdmin):
-    list_display = ["asset", "amount", "average_price"]
+    list_display = [
+        "asset",
+        "amount",
+        "average_buy_price",
+        "actual_price",
+    ]
 
 
 @admin.register(Order)
 class OrderBag(admin.ModelAdmin):
-    list_display = ["bag", "amount", "price", "order_type", "earnings", "sell_price"]
+    list_display = [
+        "id",
+        "bag",
+        "amount",
+        "price",
+        "order_type",
+        "wallet_value",
+        "earnings",
+        "average_buy_price",
+    ]
     list_filter = ["bag__asset"]

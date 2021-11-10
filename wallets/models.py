@@ -1,18 +1,8 @@
-from datetime import date
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+from django.conf import settings
 
-# Create your models here.
-
-ASSETS = (
-    ("BTC", "BTC"),
-    ("ETH", "ETH"),
-    ("LTC", "LTC"),
-    ("AAVE", "AAVE"),
-    ("XTZ", "XTZ"),
-    ("GRT", "GRT"),
-)
 
 ORDER_TYPE = (
     ("BUY", "Buy"),
@@ -21,9 +11,9 @@ ORDER_TYPE = (
 
 
 class Bag(models.Model):
-    asset = models.CharField(_("asset"), choices=ASSETS, default="BTC", max_length=254)
-    # TODO: Get that through API (market price)
+    asset = models.CharField(_("asset"), default="bitcoin", max_length=254)
     actual_price = models.FloatField(_("actual price"), default=0)
+    symbol = models.CharField(_("symbol"), default="BTC", max_length=5)
 
     def __str__(self):
         return self.asset
@@ -40,7 +30,7 @@ class Bag(models.Model):
         return total
 
     @property
-    def average_price(self):
+    def average_buy_price(self):
         orders = Order.objects.filter(bag__id=self.id).order_by("date")
         average = 0
         bag_amount = 0
@@ -65,22 +55,15 @@ class Order(models.Model):
         _("order type"), choices=ORDER_TYPE, default="BUY", max_length=10
     )
 
-    sell_price = models.FloatField(_("sell price"), default=0)
+    average_buy_price = models.FloatField(_("average buy price"), default=0)
+    wallet_value = models.FloatField(_("wallet value"), default=0)
 
     def __str__(self):
         return str(self.amount)
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.order_type == "SELL":
-            self.sell_price = self.bag.average_price
-        else:
-            self.sell_price = 0
-        super().save(*args, **kwargs)
 
     @property
     def earnings(self):
         if self.order_type == "BUY":
             return 0
         elif self.order_type == "SELL":
-            return self.amount * (self.price - self.sell_price)
+            return self.amount * (self.price - self.average_buy_price)

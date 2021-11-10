@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
-from wallets.views import OrderViewSet, BagViewSet
+from wallets.views import OrderViewSet, BagViewSet, TaxesViewSet
 
 router = routers.DefaultRouter()
 router.register(r"orders", OrderViewSet)
 router.register(r"bags", BagViewSet)
+router.register(r"taxes", TaxesViewSet)
 
 urlpatterns = [
     path("am_core/", include(router.urls)),
